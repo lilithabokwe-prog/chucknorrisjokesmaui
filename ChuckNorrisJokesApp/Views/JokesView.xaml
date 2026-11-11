@@ -2,12 +2,109 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ChuckNorrisJokesApp.Views.JokesView"
-             Title="JokesView">
-    <VerticalStackLayout>
+             Title="Joke Duo"
+             BackgroundColor="White">
 
-        <Label Text="{Binding ChuckNorrisJoke}"/>
 
-        <Button Text="Get Joke" Command="{Binding GetJokeCommand}" />
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="25"
+            Spacing="20"
+            VerticalOptions="Center">
 
-    </VerticalStackLayout>
+            <Label Text="Joke Duo"
+               FontSize="32"
+               FontAttributes="Bold"
+               TextColor="Maroon"
+               HorizontalOptions="Center" />
+
+            <Label Text="A little laughter is medicine for the soul"
+                    FontSize="14"
+                    TextColor="#746C66"
+                    HorizontalOptions="Center" />
+
+            <BoxView 
+                Color="#D4A437"
+                HeightRequest="3"
+                WidthRequest="60"
+                HorizontalOptions="Center" />
+
+            <Border
+                BackgroundColor="White"
+                StrokeShape="RoundRectangle 15"
+                StrokeThickness="1"
+                Stroke="#E7DED5"
+                Padding="15"
+                Margin="0,15,0,0">
+
+                <VerticalStackLayout Spacing="15">
+
+                    <Label Text="Chuck Norris Joke"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="Maroon" />
+
+                    <BoxView
+                        Color="#D4A437"
+                        HeightRequest="2" />
+
+                    <Label Text="{Binding ChuckNorrisJoke}"
+                       FontSize="17"
+                       TextColor="#333333"
+                       LineBreakMode="WordWrap" />
+                </VerticalStackLayout>
+            </Border>
+            
+            <Border
+                BackgroundColor="White"
+                StrokeShape="RoundRectangle 15"
+                StrokeThickness="1"
+                Stroke="#E7DED5"
+                Padding="15">
+               
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Dad Joke"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="Maroon" />
+                   
+                    <BoxView
+                        Color="#D4A437"
+                        HeightRequest="2" />
+                  
+                    <Label Text="{Binding DadJoke}"
+                       FontSize="17"
+                       TextColor="#333333"
+                       LineBreakMode="WordWrap" />
+                </VerticalStackLayout>
+            </Border>
+            
+            <ActivityIndicator
+                IsRunning="{Binding IsLoading}"
+                IsVisible="{Binding IsLoading}"
+                Color="#D4A437"
+                HeightRequest="35"
+                HorizontalOptions="Center" />
+
+            <Label Text="{Binding ErrorMessage}"
+                   FontSize="14"
+                   TextColor="Red"
+                   HorizontalOptions="Center" />
+            
+
+            <Button Text="Get new Joke" 
+                    Command="{Binding GetJokeCommand}" 
+                    IsEnabled="{Binding CanGetJokes}"
+                    BackgroundColor="Maroon"
+                    TextColor="White" 
+                    FontSize="17"
+                    FontAttributes="Bold"
+                    CornerRadius="12"
+                    HeightRequest="55"
+                    Margin="0,10,0,0"/>
+
+
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

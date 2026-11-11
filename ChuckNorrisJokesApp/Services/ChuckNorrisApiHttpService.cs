@@ -39,5 +39,30 @@ namespace ChuckNorrisJokesApp.Services
 
             return null;
         }
+        public async Task<string> GetDadJokeAsync()
+        {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, _configurationService.DadJokeApiUrl);
+
+            request.Headers.Add(
+                "Accept", "application/json");
+
+            HttpResponseMessage response = await _httpClient.SendAsync(request);
+
+            if(!response.IsSuccessStatusCode)
+            {
+                throw new Exception("Could not load Dad Joke");
+            }
+            string jsonContent = await response.Content.ReadAsStringAsync();
+
+            DadJoke joke = JsonSerializer.Deserialize<DadJoke>(
+                jsonContent);
+
+            if (joke == null || string.IsNullOrWhiteSpace(joke.joke))
+            {
+                throw new Exception(
+                    "Dad Joke data is invalid");
+            }
+            return joke.joke;
+        }
     }
 }

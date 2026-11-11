@@ -9,9 +9,14 @@ namespace ChuckNorrisJokesApp.Services
     {
         public string ChuckNorrisApiUrl { get; }
 
+        public string DadJokeApiUrl { get; }
+
         public ConfigurationService ()
         {
             ChuckNorrisApiUrl = "https://api.chucknorris.io/jokes/random";
+
+            DadJokeApiUrl = "https://icanhazdadjoke.com/";
+
         }
     }
 }
