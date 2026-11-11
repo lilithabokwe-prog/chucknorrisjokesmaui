@@ -67,3 +67,35 @@ Replace the `-f` value with `net10.0-android`, `net10.0-ios` or `net10.0-maccata
 ## Disclaimer
 
 This project is provided "as is" for learning and demonstration only. Do not use it in production or rely on it for anything important. Review the terms of the [chucknorris.io](https://api.chucknorris.io) API before using it beyond personal learning.
+
+#How I attempted to add the DadJokesApiUrl to the existing ChuckNorrisJokes 
+Models
+These are just classes that hold the data I get back from the APIs.
+
+ChuckNorrisJoke.cs – this is where I put the stuff that comes back from the Chuck Norris API. Basically just a property for the joke text.
+
+DadJoke.cs – same idea but for the dad joke API. Their response had a slightly different shape, so I needed a separate class.
+
+View
+JokesView.xaml – this is the screen you actually see. It shows both jokes, has a "Get New Jokes" button, a little loading spinner (ActivityIndicator) while it's fetching, and some text in case something goes wrong.
+
+ViewModel
+JokesViewModel.cs – honestly this was the trickiest part to wrap my head around. It's the middleman between the View and the data. It has properties that the View binds to (the joke strings, an IsLoading flag, an error message) and a Command that runs when you tap the button. It also asks the service for jokes and handles any errors.
+
+API Service
+ChuckNorrisApiHttpService.cs – this is the class that actually talks to the internet. I used HttpClient to call both joke APIs, and then JsonSerializer to turn the JSON responses into my C# objects. It took me a while to get the JSON property names matching up right!
+
+How to Run It
+I'm writing this as if you're on a fresh machine, because that's what I had to deal with:
+
+Open the project in Visual Studio 2026.
+
+Make sure the .NET MAUI workload is installed (you can check in the Visual Studio Installer – I forgot this step the first time and was very confused).
+
+Pick an Android emulator or plug in an Android device.
+
+Build the solution.
+
+Run the app.
+
+Tap the Get New Jokes button to fetch a fresh pair of jokes.
