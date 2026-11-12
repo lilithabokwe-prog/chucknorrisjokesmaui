@@ -35,9 +35,19 @@ namespace ChuckNorrisJokesApp.ViewModels
         public bool IsLoading
         {
             get { return _isLoading; }
-            set { _isLoading = value; OnPropertyChanged(); }
+            set { _isLoading = value; 
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsNotLoading));
+            }
+        }
+
+        public bool IsNotLoading
+        {
+            get { return !IsLoading; }
         }
         private bool _canGetJokes = true;
+
+        
         public bool CanGetJokes
         {
             get { return _canGetJokes; }
@@ -50,12 +60,15 @@ namespace ChuckNorrisJokesApp.ViewModels
             set { _errorMessage = value; OnPropertyChanged(); }
         }
         private IChuckNorrisApiService _chuckNorrisApiService;
+
+        private IDadJokeApiService _dadJokeApiService;
         private IPopUps _popupService;
 
-        public JokesViewModel(IChuckNorrisApiService service, IPopUps popups)
+        public JokesViewModel(IChuckNorrisApiService service, IPopUps popups, IDadJokeApiService dadJokeService)
         {
             _chuckNorrisApiService = service;
             _popupService = popups;
+            _dadJokeApiService = dadJokeService;
 
             GetJokeCommand = new Command(FetchJoke);
         }
@@ -69,26 +82,42 @@ namespace ChuckNorrisJokesApp.ViewModels
             IsLoading = true;
             CanGetJokes = false;
             ErrorMessage = "";
-        
-        
-            try
-            {
 
-              //  throw new HttpRequestException("BOOM");
-                ChuckNorrisJoke = await _chuckNorrisApiService.GetJokeAsync();
-            }
-            catch(Exception ex)
-            {
-                await _popupService.ShowPopupAsync("Error", ex.Message, "OK");
-            }
+            await Task.Delay(2000);
+
+
             try
             {
-                DadJoke = await _chuckNorrisApiService.GetDadJokeAsync();
+                try
+                {
+
+                    //  throw new HttpRequestException("BOOM");
+                    ChuckNorrisJoke = await _chuckNorrisApiService.GetJokeAsync();
+                }
+                catch (Exception ex)
+                {
+                    await _popupService.ShowPopupAsync("Error", ex.Message, "OK");
+                }
+                try
+                {
+                    DadJoke = await _dadJokeApiService.GetDadJokeAsync();
+                }
+                catch (Exception ex)
+                {
+                    await _popupService.ShowPopupAsync("Error", ex.Message, "OK");
+                }
             }
             catch (Exception ex)
             {
-                await _popupService.ShowPopupAsync("Error", ex.Message, "OK");
+                ErrorMessage = ex.Message;
             }
+            finally
+            {
+                IsLoading = false;
+                CanGetJokes = true;
+            }
+
+
         }
     }
 }
